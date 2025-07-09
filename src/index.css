@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.title{
+    @apply text-4xl sm:text-6xl text-light-primary dark:text-white transition-colors duration-300 ease-in-out
+}
+
+.box{
+    @apply flex gap-4 sm:gap-8 items-center p-4 bg-white dark:bg-blue-850 rounded-2xl h-16 sm:h-20 hover:cursor-pointer transition-shadow duration-300 ease-linear
+}
+
+.subjects{
+    @apply text-lg sm:text-3xl text-light-primary dark:text-white
+}
+
+.sub-icon{
+    @apply h-9 w-9 p-1 rounded-md sm:rounded-lg sm:h-14 sm:w-14 flex items-center justify-center
+}
