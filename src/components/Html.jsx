@@ -1,15 +1,18 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 import { DataContext } from "../Context";
-import { Result } from "postcss";
+import errorIcon from "../assets/images/icon-error.svg";
+import correctIcon from "../assets/images/icon-correct.svg";
+import wrongIcon from "../assets/images/icon-incorrect.svg";
 
 export default function Html() {
   const { question } = useContext(DataContext);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
+  const [score, setScore] = useState(0);
   const [error, setError] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
+  const [isAnswered, setIsAnswered] = useState(false);
   const [barWidth, setBarWidth] = useState(0);
-  const radioRef = useRef(null);
+  const [isFinished, setIsFinished] = useState(true);
 
   const htmlQuestions = question?.quizzes?.[0]?.questions;
   const currentQuestion = htmlQuestions && htmlQuestions[currentIndex];
@@ -28,20 +31,34 @@ export default function Html() {
     if (currentIndex < htmlQuestions.length - 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
       setSelectedOption("");
-      setIsSelected(false);
+      setIsAnswered(false);
+    } else {
+      setIsFinished(true);
     }
   };
 
   const handleOptionChange = (e) => {
-    if (!isSelected) {
-      setSelectedOption(e.target.value);
-      setIsSelected(true);
+    if (!isAnswered) {
+      const selected = e.target.value;
+      setSelectedOption(selected);
+      setIsAnswered(true);
+      setError(false);
+      if (selected === currentQuestion?.answer) {
+        setScore((prev) => ++prev);
+      }
     }
   };
 
   useEffect(() => {});
 
-  return (
+  return isFinished ? (
+    <div>
+      <div>
+        <h2>Quiz completed</h2>
+        <h2>Your scored</h2>
+      </div>
+    </div>
+  ) : (
     <div className="flex flex-col lg:flex-row gap-y-10 sm:gap-y-16">
       <div>
         <div>
@@ -67,21 +84,18 @@ export default function Html() {
         {currentQuestion?.options &&
           currentQuestion?.options.map((opt, idx) => {
             const optionLabel = String.fromCharCode(65 + idx);
-            const check = selectedOption === opt;
-            const isCorrect = currentQuestion?.answer;
+            const isSelected = selectedOption === opt;
+            const isCorrect = selectedOption === currentQuestion?.answer;
             let borderStyle =
-              "box hover:outline hover:outline-purple-600 hover:outline-2";
+              "box hover:outline hover:outline-purple-600 hover:outline-2 flex justify-between gap-2 lg:gap-5";
 
             if (isSelected) {
               if (isCorrect) {
                 borderStyle += " outline outline-green-500 outline-2";
-              } else if (isSelected && !isCorrect) {
+              } else {
                 borderStyle += " outline outline-red-500 outline-2";
               }
             }
-            // } else if (isSelected) {
-            //   borderStyle += " outline outline-purple-600 outline-2";
-            // }
 
             return (
               <label key={idx} className={borderStyle}>
@@ -89,23 +103,46 @@ export default function Html() {
                   type="radio"
                   name="option"
                   value={opt}
-                  checked={check}
+                  checked={isSelected}
                   onChange={handleOptionChange}
-                  className="hidden"
-                  ref={radioRef}
+                  className={`hidden`}
                 />
-                <span className="text-light-secondary font-medium bg-light-background dark:bg-white h-9 w-9 rounded-md sm:rounded-lg sm:h-14 sm:w-14 flex items-center justify-center">
-                  {optionLabel}
-                </span>
-                <p className="text-lg sm:text-3xl text-light-primary dark:text-white">
-                  {opt}
-                </p>
+                <div className="flex items-center gap-2 lg:gap-5">
+                  <span className="text-light-secondary font-medium bg-light-background dark:bg-white h-9 w-9 rounded-md sm:rounded-lg sm:h-14 sm:w-14 flex items-center justify-center flex-shrink-0">
+                    {optionLabel}
+                  </span>
+                  <p className="text-lg sm:text-3xl text-light-primary dark:text-white">
+                    {opt}
+                  </p>
+                </div>
+                {isSelected && isCorrect && selectedOption && (
+                  <img
+                    alt="correct option"
+                    src={correctIcon}
+                    className="w-7 h-7"
+                  />
+                )}
+                {isSelected && !isCorrect && selectedOption && (
+                  <img
+                    alt="correct option"
+                    src={wrongIcon}
+                    className="w-7 h-7"
+                  />
+                )}
               </label>
             );
           })}
         <button className="bg-purple-600 text-white text-lg h-14 w-full p-4 rounded-xl sm:text-2xl sm:h-20 sm:p-8 sm:rounded-3xl flex justify-center items-center ">
           Next Question
         </button>
+        {error && (
+          <div className="flex justify-center items-center gap-2">
+            <img src={errorIcon} alt="error icon" className="w-7 h-7" />
+            <p className="text-lg sm:text-2xl  text-red-500">
+              Please select an answer
+            </p>
+          </div>
+        )}
       </form>
     </div>
   );

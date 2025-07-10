@@ -8,7 +8,7 @@
 }
 
 .box{
-    @apply flex gap-4 sm:gap-8 items-center p-4 bg-white dark:bg-blue-850 rounded-2xl h-16 sm:h-20 hover:cursor-pointer transition-shadow duration-300 ease-linear
+    @apply  sm:min-h-[5.5rem] lg:min-h-[6.5rem] p-4 sm:p-6 flex gap-4 sm:gap-8 items-center  bg-white dark:bg-blue-850 rounded-2xl sm:h-20 hover:cursor-pointer transition-shadow duration-300 ease-linear break-words box-content
 }
 
 .subjects{

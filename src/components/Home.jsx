@@ -17,28 +17,28 @@ export default function Home() {
       </header>
 
       <div className="flex flex-col gap-4 sm:gap-6">
-        <NavLink className="box hover:shadow-md" to="/html">
+        <NavLink className="box hover:shadow-md h-16" to="/html">
           <div className="sub-icon bg-orange-50">
             <img src={html} />
           </div>
           <p className="subjects uppercase">html</p>
         </NavLink>
 
-        <NavLink className="box hover:shadow-md" to="/css">
+        <NavLink className="box hover:shadow-md  h-16" to="/css">
           <div className="sub-icon bg-green-100">
             <img src={css} />
           </div>
           <p className="subjects uppercase">css</p>
         </NavLink>
 
-        <NavLink className="box hover:shadow-md" to="/javascript">
+        <NavLink className="box hover:shadow-md  h-16" to="/javascript">
           <div className="sub-icon bg-blue-50">
             <img src={javascript} />
           </div>
           <p className="subjects">JavaScript</p>
         </NavLink>
 
-        <NavLink className="box hover:shadow-md" to="/assessibility">
+        <NavLink className="box hover:shadow-md h-16" to="/assessibility">
           <div className="sub-icon bg-purple-100">
             <img src={assess} />
           </div>
