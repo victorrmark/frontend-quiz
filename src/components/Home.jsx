@@ -38,7 +38,7 @@ export default function Home() {
           <p className="subjects">JavaScript</p>
         </NavLink>
 
-        <NavLink className="box hover:shadow-md h-16" to="/assessibility">
+        <NavLink className="box hover:shadow-md h-16" to="/accessibility">
           <div className="sub-icon bg-purple-100">
             <img src={assess} />
           </div>

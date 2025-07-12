@@ -2,18 +2,30 @@ import errorIcon from "../assets/images/icon-error.svg";
 import correctIcon from "../assets/images/icon-correct.svg";
 import wrongIcon from "../assets/images/icon-incorrect.svg";
 import { NavLink } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { DataContext } from "../Context";
+import Accessibility from "./Accessibility";
 
-export default function Quiz({subjectQuestions, question, htmlIcon}) {
+const bgColors = {
+  HTML: "bg-orange-50",
+  CSS: "bg-green-100",
+  JavaScript: "bg-blue-50",
+  Accessibility: "bg-purple-100",
+};
+
+export default function Quiz({ subjectQuestions, subjectIcon, }) {
+  const { quizName } = useContext(DataContext);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [score, setScore] = useState(0);
   const [error, setError] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
   const [barWidth, setBarWidth] = useState(0);
-  const [isFinished, setIsFinished] = useState(true);
+  const [isFinished, setIsFinished] = useState(false);
 
-    const currentQuestion = subjectQuestions && subjectQuestions[currentIndex];
+  const currentQuestion = subjectQuestions && subjectQuestions[currentIndex];
+  const bgClass = bgColors[quizName]
 
   useEffect(() => {
     const newWidth = 1 + currentIndex * 11;
@@ -56,11 +68,11 @@ export default function Quiz({subjectQuestions, question, htmlIcon}) {
       <div className="grow">
         <div className="p-8 bg-white dark:bg-blue-850 w-full h-auto flex flex-col justify-center items-center rounded-xl sm:rounded-3xl">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 sm:w-14 sm:h-14 p-0.5 flex items-center justify-center bg-orange-50 rounded-xl">
-              <img src={htmlIcon} alt="quiz title icon" />
+            <div className={`w-10 h-10 sm:w-14 sm:h-14 p-0.5 flex items-center justify-center rounded-xl ${bgClass}`}>
+              <img src={subjectIcon} alt="quiz title icon" />
             </div>
             <span className="text-light-primary dark:text-white text-lg sm:text-3xl">
-              {question?.quizzes?.[0]?.title}
+              {quizName}
             </span>
           </div>
 
