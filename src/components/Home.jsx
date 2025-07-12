@@ -7,16 +7,16 @@ import { NavLink } from 'react-router-dom';
 
 export default function Home() {
   return (
-    <div className="flex flex-col lg:flex-row gap-y-10 sm:gap-y-16">
-      <header>
+    <div className="flex flex-col md:flex-row gap-y-10 sm:gap-y-16 gap-x-8">
+      <header className="md:w-50%] grow">
         <h1 className="title font-light">Welcome to the</h1>
         <h1 className="title font-medium">Frontend Quiz!</h1>
-        <p className="text-sm italic text-light-secondary dark:text-dark-secondary mt-4 lg:mt-12 sm:text-xl">
+        <p className="text-sm italic text-light-secondary dark:text-dark-secondary mt-4 lg:mt-6 sm:text-xl">
           Pick a subject to get started.
         </p>
       </header>
 
-      <div className="flex flex-col gap-4 sm:gap-6">
+      <div className="flex flex-col gap-3.5 sm:gap-4 grow">
         <NavLink className="box hover:shadow-md h-16" to="/html">
           <div className="sub-icon bg-orange-50">
             <img src={html} />
