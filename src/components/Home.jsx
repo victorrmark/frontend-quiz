@@ -2,12 +2,14 @@ import html from "../assets/images/icon-html.svg";
 import css from "../assets/images/icon-css.svg";
 import javascript from "../assets/images/icon-js.svg";
 import assess from "../assets/images/icon-accessibility.svg";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+// import { useContext, useEffect } from "react";
 
 
 export default function Home() {
+
   return (
-    <div className="flex flex-col md:flex-row gap-y-10 sm:gap-y-16 gap-x-8">
+    <div className="flex flex-col lg:flex-row gap-y-10 sm:gap-y-16 gap-x-8">
       <header className="md:w-50%] grow">
         <h1 className="title font-light">Welcome to the</h1>
         <h1 className="title font-medium">Frontend Quiz!</h1>

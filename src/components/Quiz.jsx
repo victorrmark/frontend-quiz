@@ -2,8 +2,7 @@ import errorIcon from "../assets/images/icon-error.svg";
 import correctIcon from "../assets/images/icon-correct.svg";
 import wrongIcon from "../assets/images/icon-incorrect.svg";
 import { NavLink } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
-import { DataContext } from "../Context";
+import { useState, useEffect } from "react";
 import Accessibility from "./Accessibility";
 
 const bgColors = {
@@ -13,9 +12,7 @@ const bgColors = {
   Accessibility: "bg-purple-100",
 };
 
-export default function Quiz({ subjectQuestions, subjectIcon, }) {
-  const { quizName } = useContext(DataContext);
-
+export default function Quiz({ subjectQuestions, subjectIcon, quizName }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [score, setScore] = useState(0);
@@ -25,7 +22,7 @@ export default function Quiz({ subjectQuestions, subjectIcon, }) {
   const [isFinished, setIsFinished] = useState(false);
 
   const currentQuestion = subjectQuestions && subjectQuestions[currentIndex];
-  const bgClass = bgColors[quizName]
+  const bgClass = bgColors[quizName];
 
   useEffect(() => {
     const newWidth = 1 + currentIndex * 11;
@@ -59,16 +56,25 @@ export default function Quiz({ subjectQuestions, subjectIcon, }) {
     }
   };
 
+  // const save = () => {
+  //   localStorage.setItem(
+  //     "quizState",
+  //     JSON.stringify({ qIndex: currentIndex, qOption: selectedOption, qSore: score, qError: error, q })
+  //   );
+  // };
+
   return isFinished ? (
-    <div className="flex flex-col md:flex-row gap-y-6 sm:gap-y-8 gap-x-8">
-      <div className="w-full md:w-[50%]">
+    <div className="flex flex-col lg:flex-row gap-y-10 sm:gap-y-16 gap-x-8">
+      <div className="w-full lg:w-[50%]">
         <h2 className="title font-light">Quiz completed</h2>
         <h2 className="title font-medium">You scored...</h2>
       </div>
       <div className="grow">
         <div className="p-8 bg-white dark:bg-blue-850 w-full h-auto flex flex-col justify-center items-center rounded-xl sm:rounded-3xl">
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 sm:w-14 sm:h-14 p-0.5 flex items-center justify-center rounded-xl ${bgClass}`}>
+            <div
+              className={`w-10 h-10 sm:w-14 sm:h-14 p-0.5 flex items-center justify-center rounded-xl ${bgClass}`}
+            >
               <img src={subjectIcon} alt="quiz title icon" />
             </div>
             <span className="text-light-primary dark:text-white text-lg sm:text-3xl">
@@ -92,8 +98,8 @@ export default function Quiz({ subjectQuestions, subjectIcon, }) {
       </div>
     </div>
   ) : (
-    <div className="flex flex-col md:flex-row gap-y-10 sm:gap-y-16 gap-x-20">
-      <div className="w-full md:w-[65%] grow flex flex-col justify-between">
+    <div className="flex flex-col lg:flex-row gap-y-10 sm:gap-y-16 gap-x-20">
+      <div className="w-full lg:w-[65%] grow flex flex-col justify-between">
         <div>
           <p className="text-sm italic sm:text-xl text-light-secondary dark:text-dark-secondary mb-4">
             Question {currentIndex + 1} of {subjectQuestions?.length}
@@ -103,7 +109,7 @@ export default function Quiz({ subjectQuestions, subjectIcon, }) {
           </h2>
         </div>
         <div
-          className="w-full h-3.5 p-1 mt-6 sm:mt-10 md:mb-20 dark:bg-blue-850 bg-white rounded-full flex items-center"
+          className="w-full h-3.5 p-1 mt-6 sm:mt-10 lg:mb-20 dark:bg-blue-850 bg-white rounded-full flex items-center"
           role="progressbar"
         >
           <div
@@ -114,7 +120,7 @@ export default function Quiz({ subjectQuestions, subjectIcon, }) {
       </div>
 
       <form
-        className="flex flex-col gap-3.5 sm:gap-4 grow md:w-[60%]"
+        className="flex flex-col gap-3.5 sm:gap-4.5 grow lg:w-[60%]"
         onSubmit={handleNext}
       >
         {currentQuestion?.options &&
@@ -124,12 +130,16 @@ export default function Quiz({ subjectQuestions, subjectIcon, }) {
             const isCorrect = selectedOption === currentQuestion?.answer;
             let borderStyle =
               "box hover:outline hover:outline-purple-600 hover:outline-2 flex justify-between gap-2 lg:gap-5 md:h-fit";
+            let labelStyle =
+              "text-lg sm:text-2xl text-light-secondary font-medium bg-light-background dark:bg-white h-9 w-9 sm:h-10 sm:w-10 rounded-md sm:rounded-lg  flex items-center justify-center flex-shrink-0";
 
             if (isSelected) {
               if (isCorrect) {
-                borderStyle += " outline outline-green-500 outline-2";
+                borderStyle += " outline outline-green-500 outline-2 ";
+                labelStyle += " bg-green-500 text-white ";
               } else {
                 borderStyle += " outline outline-red-500 outline-2";
+                labelStyle += " bg-red-500 text-white ";
               }
             }
 
@@ -144,27 +154,27 @@ export default function Quiz({ subjectQuestions, subjectIcon, }) {
                   className={`hidden`}
                 />
                 <div className="flex items-center gap-2 lg:gap-5">
-                  <span className="text-light-secondary font-medium bg-light-background dark:bg-white h-9 w-9 sm:h-10 sm:w-10 rounded-md sm:rounded-lg  flex items-center justify-center flex-shrink-0">
-                    {optionLabel}
-                  </span>
+                  <span className={labelStyle}>{optionLabel}</span>
                   <p className="text-lg sm:text-2xl text-light-primary dark:text-white">
                     {opt}
                   </p>
                 </div>
-                {isSelected && isCorrect && selectedOption && (
+                {selectedOption && opt === currentQuestion.answer && (
                   <img
-                    alt="correct option"
+                    alt="correct option icon"
                     src={correctIcon}
                     className="w-7 h-7"
                   />
                 )}
-                {isSelected && !isCorrect && selectedOption && (
-                  <img
-                    alt="correct option"
-                    src={wrongIcon}
-                    className="w-7 h-7"
-                  />
-                )}
+                {selectedOption &&
+                  isSelected &&
+                  opt !== currentQuestion.answer && (
+                    <img
+                      alt="wrong option icon"
+                      src={wrongIcon}
+                      className="w-7 h-7"
+                    />
+                  )}
               </label>
             );
           })}

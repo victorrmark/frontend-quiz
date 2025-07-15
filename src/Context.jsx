@@ -4,7 +4,6 @@ export const DataContext = createContext(null);
 
 export function ContextProvider({ children }) {
   const [question, setQuestion] = useState(null);
-  const [quizName, setQuizName] = useState('')
 
   useEffect(() => {
     async function getData() {
@@ -21,7 +20,7 @@ export function ContextProvider({ children }) {
   }, []);
 
   return (
-    <DataContext.Provider value={{ question, quizName, setQuizName }}>
+    <DataContext.Provider value={{ question}}>
       {children}
     </DataContext.Provider>
   );
