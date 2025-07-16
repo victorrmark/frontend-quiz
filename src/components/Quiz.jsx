@@ -56,6 +56,13 @@ export default function Quiz({ subjectQuestions, subjectIcon, quizName }) {
     }
   };
 
+  const handleOptionEnter = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      e.currentTarget.querySelector('input[type="radio"]')?.click();
+    }
+  };
+
   // const save = () => {
   //   localStorage.setItem(
   //     "quizState",
@@ -127,7 +134,7 @@ export default function Quiz({ subjectQuestions, subjectIcon, quizName }) {
           currentQuestion?.options.map((opt, idx) => {
             const optionLabel = String.fromCharCode(65 + idx);
             const isSelected = selectedOption === opt;
-            const isCorrect = selectedOption === currentQuestion?.answer;
+            const isCorrect = opt === currentQuestion?.answer;
             let borderStyle =
               "box hover:outline hover:outline-purple-600 hover:outline-2 flex justify-between gap-2 lg:gap-5 md:h-fit";
             let labelStyle =
@@ -144,7 +151,12 @@ export default function Quiz({ subjectQuestions, subjectIcon, quizName }) {
             }
 
             return (
-              <label key={idx} className={borderStyle}>
+              <label
+                key={idx}
+                className={`${borderStyle} focus-visible:outline-purple-600`}
+                tabIndex={0}
+                onKeyDown={handleOptionEnter}
+                >
                 <input
                   type="radio"
                   name="option"
